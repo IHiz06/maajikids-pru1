@@ -1,11 +1,13 @@
 import os
-from core import create_app, db # Asegúrate de exportar 'db' desde tu carpeta core
-from flask_migrate import Migrate
+from core import create_app, db, migrate # Importa migrate también
 
-app = create_app(os.getenv("FLASK_ENV", "development"))
+app = create_app(os.getenv("FLASK_ENV", "production"))
 
-# Esta línea es la que soluciona el error "No such command 'db'"
-migrate = Migrate(app, db)
+# Esto asegura que el comando 'flask db' sea reconocido siempre
+with app.app_context():
+    if db.engine.url.drivername == "postgresql":
+        # Opcional: configuraciones específicas de Postgres si fueran necesarias
+        pass
 
 if __name__ == "__main__":
-    app.run(debug=app.config.get("DEBUG", False), host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
