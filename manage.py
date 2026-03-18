@@ -1,7 +1,7 @@
 import os
 from core import create_app, db, migrate # Importa migrate también
 
-app = create_app(os.getenv("FLASK_ENV", "production"))
+app = create_app(os.getenv("FLASK_ENV", "development"))
 
 # Esto asegura que el comando 'flask db' sea reconocido siempre
 with app.app_context():
